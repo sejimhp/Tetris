@@ -11,7 +11,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Map.cpp" />
+    <ClCompile Include="Piece.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Engine\splash.png" />
@@ -160,6 +163,11 @@
   <ItemGroup>
     <Xml Include="Engine\objdetect\faceAnime.xml" />
     <Xml Include="Engine\objdetect\facePhoto.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Map.h" />
+    <ClInclude Include="Piece.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{01EBD207-CEBE-4DA3-A9A9-7D6E6169945A}</ProjectGuid>

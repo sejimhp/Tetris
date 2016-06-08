@@ -4,6 +4,13 @@
 
 class Piece{
 public:
+	enum color{
+		BULE,
+		RED, 
+		ORANGE,
+		GREENE
+	};
+
 	Piece();
 
 	void update();

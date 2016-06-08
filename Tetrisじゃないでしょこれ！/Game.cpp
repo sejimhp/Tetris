@@ -8,9 +8,9 @@ Game::Game(){
 }
 
 void Game::update(){
-
+	map->update();
 }
 
 void Game::draw(){
-
+	map->draw();
 }

@@ -19,3 +19,12 @@ public:
 private:
 public:
 };
+
+class Pieces{
+public:
+	Pieces();
+
+	
+	std::vector<std::vector<Piece> > pieces;
+private:
+};

@@ -1,6 +1,7 @@
 # include <Siv3D.hpp>
 
 # include "Map.h"
+# include "Effect.h"
 
 Map::Map(){
 	block_counter = 0;
@@ -12,10 +13,10 @@ Map::Map(){
 }
 
 void Map::update(){
-
 }
 
 void Map::draw(){
+
 
 	//draw line
 	Line(39, 20, 39, 20 + BSIZE*HEIGHT).draw();
@@ -29,3 +30,4 @@ void Map::draw(){
 		}
 	}
 }
+

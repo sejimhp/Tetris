@@ -1,5 +1,4 @@
-﻿# include <Siv3D.hpp>
-# include <memory>
+﻿# include <memory>
 
 # include "Game.h"
 

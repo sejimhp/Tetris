@@ -49,6 +49,7 @@ void Pieces::update(Game* game){
 	}
 	if (++fallCounter % 100 == 0 || Input::KeyDown.clicked){
 		if (!checkBottom(map)){
+			MAP->overWrite(pieces, x, y);
 			newPiece();
 		}
 		y++;
@@ -98,6 +99,7 @@ void Pieces::newPiece(){
 		}
 	}
 }
+
 bool Pieces::checkLeft(std::vector<std::vector<Piece> > map){
 	int dy, dx;
 	for (int j = 0; j < 3; j++){

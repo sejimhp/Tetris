@@ -27,6 +27,7 @@ public:
 
 	Type getColor() const { return color; }
 	void setColor(Type t) { color = t; }
+	void set(Piece piece) { color = piece.getColor(); }
 
 private:
 	Type color;
@@ -48,6 +49,9 @@ public:
 	bool checkRight(std::vector<std::vector<Piece> > map);
 	//‰º‘¤‚Ì‚ ‚½‚è”»’è
 	bool checkBottom(std::vector<std::vector<Piece> > map);
+
+	//ƒ}ƒbƒv‚É‘‚«‚İ
+	void overWrite(std::vector<std::vector<Piece> > map);
 	
 	std::vector<std::vector<Piece> > pieces;
 private:

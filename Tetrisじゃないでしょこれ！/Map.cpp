@@ -36,3 +36,12 @@ void Map::draw(){
 	}
 }
 
+void Map::overWrite(std::vector<std::vector<Piece> > pieces, int x, int y){
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			if (pieces[i][j].getColor() != Type::NUL){
+				map[i + y][j + x].set(pieces[i][j]);
+			}
+		}
+	}
+}

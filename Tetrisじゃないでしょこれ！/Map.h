@@ -12,6 +12,8 @@ public:
 	void draw();
 	std::vector<std::vector<Piece> > getMap() const { return map; }
 
+	void overWrite(std::vector<std::vector<Piece> > pieces, int x, int y);
+
 private:
 	std::vector<std::vector<Piece> > map;
 public:

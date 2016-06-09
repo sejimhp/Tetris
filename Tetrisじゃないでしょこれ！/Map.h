@@ -10,6 +10,8 @@ public:
 
 	void update();
 	void draw();
+	std::vector<std::vector<Piece> > getMap() const { return map; }
+
 private:
 	std::vector<std::vector<Piece> > map;
 public:

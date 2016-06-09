@@ -1,6 +1,8 @@
 # include <Siv3D.hpp>
 
 # include "Piece.h"
+# include "Map.h"
+# include "Game.h"
 
 Piece::Piece(){
 
@@ -13,16 +15,16 @@ void Piece::update(){
 void Piece::draw(int x, int y){
 	switch (color){
 	case Type::BULE:
-		Rect(x, y, BSIZE - 1, BSIZE - 1).draw({Palette::Aqua, 80});
+		Rect(x, y, BSIZE - 1, BSIZE - 1).draw({ Palette::Aqua, 80 });
 		break;
 	case Type::RED:
-		Rect(x, y, BSIZE - 1, BSIZE - 1).draw({Palette::Red, 80});
+		Rect(x, y, BSIZE - 1, BSIZE - 1).draw({ Palette::Red, 80 });
 		break;
 	case Type::ORANGE:
-		Rect(x, y, BSIZE - 1, BSIZE - 1).draw({Palette::Orange, 80});
+		Rect(x, y, BSIZE - 1, BSIZE - 1).draw({ Palette::Orange, 80 });
 		break;
 	case Type::GREEN:
-		Rect(x, y, BSIZE - 1, BSIZE - 1).draw({Palette::Green, 80});
+		Rect(x, y, BSIZE - 1, BSIZE - 1).draw({ Palette::Green, 80 });
 		break;
 	}
 }
@@ -32,16 +34,28 @@ Pieces::Pieces(){
 	for (int i = 0; i < 3; i++){
 		pieces[i].resize(3);
 	}
+	fallCounter = 0;
 }
 
-void Pieces::update(){
+void Pieces::update(Game* game){
+	std::shared_ptr<Map> MAP = game->getMap();
+	std::vector<std::vector<Piece> > map = MAP->getMap();
 
+	if (++fallCounter % 100 == 0){
+		y++;
+	}
+	if (Input::KeyLeft.clicked && checkLeft(map)){
+		x--;
+	}
+	if (Input::KeyRight.clicked && checkRight(map)){
+		x++;
+	}
 }
 
 void Pieces::draw(){
 	for (int i = 0; i < 3; i++){
 		for (int j = 0; j < 3; j++){
-			pieces[i][j].draw(40 + j * BSIZE, 20 + i * BSIZE);
+			pieces[i][j].draw(40 + (x + j) * BSIZE, 20 + (y + i) * BSIZE);
 		}
 	}
 }
@@ -79,4 +93,38 @@ void Pieces::newPiece(){
 			i++;
 		}
 	}
+}
+bool Pieces::checkLeft(std::vector<std::vector<Piece> > map){
+	int dy, dx;
+	for (int j = 0; j < 3; j++){
+		for (int i = 0; i < 3; i++){
+			dx = x + j - 1;
+			dy = y + i;
+			if (pieces[i][j].getColor() != Type::NUL &&
+				(dx < 0 || map[dy][dx].getColor() != Type::NUL) ){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Pieces::checkRight(std::vector<std::vector<Piece> > map){
+	int dy, dx;
+	for (int j = 2; j >= 0; j--){
+		for (int i = 0; i < 3; i++){
+			dx = x + j + 1;
+			dy = y + i;
+			if (pieces[i][j].getColor() != Type::NUL &&
+				(dx >= 10 || map[dy][dx].getColor() != Type::NUL) ){
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+bool Pieces::checkBottom(std::vector<std::vector<Piece> > map){
+
+	return true;
 }

@@ -14,8 +14,14 @@ Game::Game(){
 }
 
 void Game::update(){
+
+
+	if (Input::KeySpace.clicked){
+		pieces->newPiece();
+	}
+
 	map->update();
-	pieces->update();
+	pieces->update(this);
 
 	back_counter++;
 	if(back_counter %= 10){

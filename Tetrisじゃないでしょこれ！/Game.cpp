@@ -8,11 +8,14 @@ Game::Game(){
 	back_counter = 0;
 
 	map = std::make_shared < Map >() ;
+	pieces = std::make_shared < Pieces >() ;
 	effect = std::make_shared < Effect >() ;
+	pieces->newPiece();
 }
 
 void Game::update(){
 	map->update();
+	pieces->update();
 
 	back_counter++;
 	if(back_counter %= 10){
@@ -25,4 +28,5 @@ void Game::update(){
 
 void Game::draw(){
 	map->draw();
+	pieces->draw();
 }

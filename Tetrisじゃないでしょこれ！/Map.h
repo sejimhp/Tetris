@@ -4,10 +4,6 @@
 
 # include "Piece.h"
 
-# define HEIGHT 20
-# define WIDTH 10
-# define BSIZE 20
-
 class Map{
 public:
 	Map();

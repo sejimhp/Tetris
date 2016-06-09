@@ -26,7 +26,7 @@ void Pieces::update(Game* game){
 		x++;
 	}
 	if (Input::KeyUp.clicked){
-		turn();
+		turn(map);
 	}
 	if (++fallCounter % 100 == 0 || Input::KeyDown.clicked ||
 		(Input::KeyDown.pressed && fallCounter % 5 == 0)){
@@ -47,27 +47,46 @@ void Pieces::draw(){
 	}
 }
 
-void Pieces::turn(){
+void Pieces::turn(std::vector<std::vector<Piece> > map){
 	std::vector<Piece> v(2);
-	for (int i = 0; i < 2; i++){
-		v[i].set(pieces[0][i]);
+	std::vector<std::vector<Piece> > m(3, std::vector<Piece>(3));
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			m[i][j].set(pieces[i][j]);
+		}
 	}
 	for (int i = 0; i < 2; i++){
-		pieces[0][i].set(pieces[2-i][0]);
+		v[i].set(m[0][i]);
 	}
 	for (int i = 0; i < 2; i++){
-		pieces[2-i][0].set(pieces[2][2-i]);
+		m[0][i].set(m[2-i][0]);
 	}
 	for (int i = 0; i < 2; i++){
-		pieces[2][2-i].set(pieces[i][2]);
+		m[2-i][0].set(m[2][2-i]);
 	}
 	for (int i = 0; i < 2; i++){
-		pieces[i][2].set(v[i]);
+		m[2][2-i].set(m[i][2]);
+	}
+	for (int i = 0; i < 2; i++){
+		m[i][2].set(v[i]);
+	}
+
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			if (m[i][j].getColor() != Type::NUL && map[i + y][j + x].getColor() != Type::NUL){
+				return;
+			}
+		}
 	}
 
 	if (x < 0)	x++;
 	if (x >= 8) x--;
 	if (y >= 18)y--;
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			pieces[i][j].set(m[i][j]);
+		}
+	}
 }
 
 bool Pieces::over(std::vector<std::vector<Piece> > map){

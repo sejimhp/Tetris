@@ -18,11 +18,11 @@ public:
 	//下側のあたり判定
 	bool checkBottom(std::vector<std::vector<Piece> > map);
 
-	//マップに書き込み
+	//被っているところばゲーム終了とみなす
 	bool over(std::vector<std::vector<Piece> > map);
 
 	//回転
-	void turn();
+	void turn(std::vector<std::vector<Piece> > map);
 	
 	std::vector<std::vector<Piece> > pieces;
 private:

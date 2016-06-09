@@ -20,8 +20,6 @@ void Map::update(){
 }
 
 void Map::draw(){
-
-
 	//draw line
 	Line(39, 20, 39, 20 + BSIZE*HEIGHT).draw();
 	Line(40 + BSIZE*WIDTH, 20, 40 + BSIZE*WIDTH, 20 + BSIZE*HEIGHT).draw();

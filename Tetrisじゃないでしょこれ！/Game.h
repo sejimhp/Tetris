@@ -2,7 +2,7 @@
 
 # include <Siv3D.hpp>
 
-# include "Piece.h"
+# include "Pieces.h"
 # include "Map.h"
 
 class Map;

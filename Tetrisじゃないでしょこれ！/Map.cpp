@@ -13,7 +13,9 @@ Map::Map(){
 			map[i][j].setColor(Type::NUL);
 		}
 	}
-	map[5][1].setColor(Type::BULE);
+	for (int i = 0; i < 9; i++){
+		//map[19][i].setColor(Type::BULE);
+	}
 }
 
 void Map::update(){

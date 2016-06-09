@@ -64,12 +64,17 @@ void Pieces::turn(){
 	for (int i = 0; i < 2; i++){
 		pieces[i][2].set(v[i]);
 	}
+
+	if (x < 0)	x++;
+	if (x >= 8) x--;
+	if (y >= 18)y--;
 }
 
 bool Pieces::over(std::vector<std::vector<Piece> > map){
 	for (int i = 0; i < 3; i++){
 		for (int j = 0; j < 3; j++){
-			if (map[i + y][j + x].getColor() != Type::NUL
+			if ((i + y) < 20 && (j + x) >= 0 && (j + x) < 10 &&
+				map[i + y][j + x].getColor() != Type::NUL
 				&& pieces[i][j].getColor() != Type::NUL){
 				return true;
 			}

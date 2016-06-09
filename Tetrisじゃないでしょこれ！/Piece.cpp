@@ -41,15 +41,19 @@ void Pieces::update(Game* game){
 	std::shared_ptr<Map> MAP = game->getMap();
 	std::vector<std::vector<Piece> > map = MAP->getMap();
 
-	if (++fallCounter % 100 == 0){
-		y++;
-	}
 	if (Input::KeyLeft.clicked && checkLeft(map)){
 		x--;
 	}
 	if (Input::KeyRight.clicked && checkRight(map)){
 		x++;
 	}
+	if (++fallCounter % 100 == 0 || Input::KeyDown.clicked){
+		if (!checkBottom(map)){
+			newPiece();
+		}
+		y++;
+	}
+
 }
 
 void Pieces::draw(){
@@ -101,7 +105,7 @@ bool Pieces::checkLeft(std::vector<std::vector<Piece> > map){
 			dx = x + j - 1;
 			dy = y + i;
 			if (pieces[i][j].getColor() != Type::NUL &&
-				(dx < 0 || map[dy][dx].getColor() != Type::NUL) ){
+				(dx < 0 || map[dy][dx].getColor() != Type::NUL)){
 				return false;
 			}
 		}
@@ -116,7 +120,7 @@ bool Pieces::checkRight(std::vector<std::vector<Piece> > map){
 			dx = x + j + 1;
 			dy = y + i;
 			if (pieces[i][j].getColor() != Type::NUL &&
-				(dx >= 10 || map[dy][dx].getColor() != Type::NUL) ){
+				(dx >= 10 || map[dy][dx].getColor() != Type::NUL)){
 				return false;
 			}
 		}
@@ -125,6 +129,16 @@ bool Pieces::checkRight(std::vector<std::vector<Piece> > map){
 }
 
 bool Pieces::checkBottom(std::vector<std::vector<Piece> > map){
-
+	int dy, dx;
+	for (int i = 2; i >= 0; i--){
+		for (int j = 0; j < 3; j++){
+			dx = x + j;
+			dy = y + i + 1;
+			if (pieces[i][j].getColor() != Type::NUL &&
+				(dy >= 20 || map[dy][dx].getColor() != Type::NUL)){
+				return false;
+			}
+		}
+	}
 	return true;
 }

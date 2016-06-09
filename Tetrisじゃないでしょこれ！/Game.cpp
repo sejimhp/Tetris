@@ -5,6 +5,7 @@
 # include "Effect.h"
 
 Game::Game(){
+	state = State::GAME;
 	back_counter = 0;
 
 	map = std::make_shared < Map >() ;
@@ -16,23 +17,44 @@ Game::Game(){
 void Game::update(){
 
 
-	if (Input::KeySpace.clicked){
-		pieces->newPiece();
-	}
+	switch (state){
+	case State::GAME:
+		if (Input::KeySpace.clicked){
+			pieces->newPiece();
+		}
 
-	map->update();
-	pieces->update(this);
+		map->update();
+		pieces->update(this);
 
-	back_counter++;
-	if(back_counter %= 10){
-		Vec2 pos(Random(640.0), Random(480.0));
-		effect->add<Snow>(pos, 1);
+		back_counter++;
+		if (back_counter %= 10){
+			Vec2 pos(Random(640.0), Random(480.0));
+			effect->add<Snow>(pos, 1);
+		}
+		effect->setSpeed(0.3);
+		effect->update();
+		break;
+
+	case State::GAMEOVER:
+		if (Input::KeySpace.clicked){
+			map->clear();
+			pieces->newPiece();
+			state = State::GAME;
+		}
+		break;
 	}
-	effect->setSpeed(0.3);
-	effect->update();
 }
 
 void Game::draw(){
+	static Font font(30);
+
 	map->draw();
 	pieces->draw();
+
+	switch (state)
+	{
+	case State::GAMEOVER:
+		font(L"GameOver").draw();
+		break;
+	}
 }

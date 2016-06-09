@@ -43,3 +43,11 @@ void Map::overWrite(std::vector<std::vector<Piece> > pieces, int x, int y){
 		}
 	}
 }
+
+void Map::clear(){
+	for (int i = 0; i < HEIGHT; i++){
+		for (int j = 0; j < WIDTH; j++){
+			map[i][j].setColor(Type::NUL);
+		}
+	}
+}

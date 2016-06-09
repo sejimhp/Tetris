@@ -15,6 +15,10 @@ void Pieces::update(Game* game){
 	std::shared_ptr<Map> MAP = game->getMap();
 	std::vector<std::vector<Piece> > map = MAP->getMap();
 
+	if (over(map)){
+		game->setGameOver();
+		return;
+	}
 	if (Input::KeyLeft.clicked && checkLeft(map)){
 		x--;
 	}
@@ -60,6 +64,18 @@ void Pieces::turn(){
 	for (int i = 0; i < 2; i++){
 		pieces[i][2].set(v[i]);
 	}
+}
+
+bool Pieces::over(std::vector<std::vector<Piece> > map){
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			if (map[i + y][j + x].getColor() != Type::NUL
+				&& pieces[i][j].getColor() != Type::NUL){
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void Pieces::newPiece(){

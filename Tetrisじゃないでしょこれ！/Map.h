@@ -14,6 +14,7 @@ public:
 
 	void overWrite(std::vector<std::vector<Piece> > pieces, int x, int y);
 
+	void clear();
 private:
 	std::vector<std::vector<Piece> > map;
 public:

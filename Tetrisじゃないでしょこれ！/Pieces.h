@@ -19,7 +19,7 @@ public:
 	bool checkBottom(std::vector<std::vector<Piece> > map);
 
 	//ƒ}ƒbƒv‚É‘‚«‚İ
-	void overWrite(std::vector<std::vector<Piece> > map);
+	bool over(std::vector<std::vector<Piece> > map);
 
 	//‰ñ“]
 	void turn();

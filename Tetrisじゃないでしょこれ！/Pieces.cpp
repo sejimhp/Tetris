@@ -21,7 +21,11 @@ void Pieces::update(Game* game){
 	if (Input::KeyRight.clicked && checkRight(map)){
 		x++;
 	}
-	if (++fallCounter % 100 == 0 || Input::KeyDown.clicked){
+	if (Input::KeyUp.clicked){
+		turn();
+	}
+	if (++fallCounter % 100 == 0 || Input::KeyDown.clicked ||
+		(Input::KeyDown.pressed && fallCounter % 5 == 0)){
 		if (!checkBottom(map)){
 			MAP->overWrite(pieces, x, y);
 			newPiece();
@@ -36,6 +40,25 @@ void Pieces::draw(){
 		for (int j = 0; j < 3; j++){
 			pieces[i][j].draw(40 + (x + j) * BSIZE, 20 + (y + i) * BSIZE);
 		}
+	}
+}
+
+void Pieces::turn(){
+	std::vector<Piece> v(2);
+	for (int i = 0; i < 2; i++){
+		v[i].set(pieces[0][i]);
+	}
+	for (int i = 0; i < 2; i++){
+		pieces[0][i].set(pieces[2-i][0]);
+	}
+	for (int i = 0; i < 2; i++){
+		pieces[2-i][0].set(pieces[2][2-i]);
+	}
+	for (int i = 0; i < 2; i++){
+		pieces[2][2-i].set(pieces[i][2]);
+	}
+	for (int i = 0; i < 2; i++){
+		pieces[i][2].set(v[i]);
 	}
 }
 

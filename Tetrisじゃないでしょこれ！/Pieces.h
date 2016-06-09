@@ -20,6 +20,9 @@ public:
 
 	//ƒ}ƒbƒv‚É‘‚«‚İ
 	void overWrite(std::vector<std::vector<Piece> > map);
+
+	//‰ñ“]
+	void turn();
 	
 	std::vector<std::vector<Piece> > pieces;
 private:

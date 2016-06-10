@@ -14,9 +14,16 @@ public:
 
 	void overWrite(std::vector<std::vector<Piece> > pieces, int x, int y);
 
+	//全てNULで初期化
 	void clear();
+
 private:
 	std::vector<std::vector<Piece> > map;
+
+	//上からy番目, 左からxを下に 縦1列シフト
+	void shiftDown(int y);
+
+	void exitLine();
 public:
 	int block_counter;
 };

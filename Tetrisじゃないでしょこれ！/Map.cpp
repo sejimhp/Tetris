@@ -14,11 +14,12 @@ Map::Map(){
 		}
 	}
 	for (int i = 0; i < 9; i++){
-		//map[19][i].setColor(Type::BULE);
+		map[19][i].setColor(Type::BULE);
 	}
 }
 
 void Map::update(){
+	exitLine();
 }
 
 void Map::draw(){
@@ -50,6 +51,33 @@ void Map::clear(){
 	for (int i = 0; i < HEIGHT; i++){
 		for (int j = 0; j < WIDTH; j++){
 			map[i][j].setColor(Type::NUL);
+		}
+	}
+}
+
+void Map::shiftDown(int y){
+	for (int i = y; i >= 0; i--){
+		for (int j = 0; j < WIDTH; j++){
+			if (i == 0){
+				map[i][j].setColor(Type::NUL);
+			}
+			else{
+				map[i][j].set(map[i - 1][j]);
+			}
+		}
+	}
+}
+
+void Map::exitLine(){
+	for (int y = 0; y < HEIGHT; y++){
+		int x;
+		for (x = 0; x < WIDTH; x++){
+			if (map[y][x].getColor() == Type::NUL){
+				break;
+			}
+		}
+		if (x == WIDTH){
+			shiftDown(y);
 		}
 	}
 }

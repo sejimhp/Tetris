@@ -71,17 +71,23 @@ void Pieces::turn(std::vector<std::vector<Piece> > map){
 		m[i][2].set(v[i]);
 	}
 
+	int flag = 0;
+	if (x < 0){ x++; flag = 1; }
+	if (x >= 8) { x--; flag = 2; }
+	if (y >= 18) {	y--; flag = 3;}
+
 	for (int i = 0; i < 3; i++){
 		for (int j = 0; j < 3; j++){
-			if (m[i][j].getColor() != Type::NUL && map[i + y][j + x].getColor() != Type::NUL){
+			if (m[i][j].getColor() != Type::NUL && 
+				map[i + y][j + x].getColor() != Type::NUL){
+				if (flag == 1)	x--;
+				if (flag == 2)	x++;
+				if (flag == 3)	y++;
 				return;
 			}
 		}
 	}
 
-	if (x < 0)	x++;
-	if (x >= 8) x--;
-	if (y >= 18)y--;
 	for (int i = 0; i < 3; i++){
 		for (int j = 0; j < 3; j++){
 			pieces[i][j].set(m[i][j]);

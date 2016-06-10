@@ -19,7 +19,11 @@ Map::Map(){
 }
 
 void Map::update(){
-	exitLine();
+
+	if (Input::KeySpace.clicked){
+		shiftAll();
+	}
+	//exitLine();
 }
 
 void Map::draw(){
@@ -63,6 +67,26 @@ void Map::shiftDown(int y){
 			}
 			else{
 				map[i][j].set(map[i - 1][j]);
+			}
+		}
+	}
+}
+
+void Map::shiftAll(){
+	int cnt = 1;
+	while (cnt){
+		cnt = 0;
+		for (int i = HEIGHT - 1; i >= 0; i--){
+			for (int j = 0; j < WIDTH; j++){
+				if (i == 0){
+					map[i][j].setColor(Type::NUL);
+				}
+				else if (map[i][j].getColor() == Type::NUL &&
+					map[i - 1][j].getColor() != Type::NUL){
+					map[i][j].set(map[i - 1][j]);
+					map[i - 1][j].setColor(Type::NUL);
+					cnt++;
+				}
 			}
 		}
 	}

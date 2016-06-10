@@ -22,7 +22,10 @@ private:
 
 	//上からy番目, 左からxを下に 縦1列シフト
 	void shiftDown(int y);
+	//全部シフト!
+	void shiftAll();
 
+	//一列そろっているところがあれば消す
 	void exitLine();
 public:
 	int block_counter;

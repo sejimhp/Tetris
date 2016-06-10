@@ -33,4 +33,7 @@ public:
 
 	int lineFlag;
 	int flagCounter;
+
+	int score;
+	int shiftAllCounter;
 };

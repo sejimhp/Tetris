@@ -4,6 +4,8 @@
 # include "Effect.h"
 
 Map::Map(){
+	shiftAllCounter = 3;
+	score = 0;
 	lineFlag = 0;
 	block_counter = 0;
 	back_counter = 0;
@@ -29,9 +31,11 @@ void Map::update(std::shared_ptr<Effect> effect){
 		effect->add<Snow>(pos, 1);
 	}
 
-	if (Input::KeySpace.clicked){
+	if (Input::KeyZ.clicked && shiftAllCounter){
+		shiftAllCounter--;
 		shiftAll();
 	}
+
 	if (!lineFlag){
 		exitLine(effect);
 	}
@@ -58,6 +62,12 @@ void Map::draw(){
 			map[y][x].draw(40 + BSIZE*x, 20 + BSIZE*y);
 		}
 	}
+
+	static Font font(25);
+	font(L"Score").draw(300, 100);
+	font(score).draw(320, 150);
+	font(L"ZÉLÅ[Ç≈ÇïˆÇ∑").draw(300, 200);
+	font(L"écÇË", shiftAllCounter, L"âÒ").draw(320, 240);
 }
 
 void Map::overWrite(std::vector<std::vector<Piece> > pieces, int x, int y){
@@ -76,6 +86,8 @@ void Map::clear(){
 			map[i][j].setColor(Type::NUL);
 		}
 	}
+	score = 0;
+	shiftAllCounter = 3;
 }
 
 void Map::shiftDown(int y){
@@ -112,6 +124,7 @@ void Map::shiftAll(){
 }
 
 void Map::exitLine(std::shared_ptr<Effect> effect){
+	int sco = 0;
 	for (int y = 0; y < HEIGHT; y++){
 		int x;
 		for (x = 0; x < WIDTH; x++){
@@ -120,8 +133,11 @@ void Map::exitLine(std::shared_ptr<Effect> effect){
 			}
 		}
 		if (x == WIDTH){
+			sco = 100;
+			if (System::FrameCount() - flagCounter < 10)	sco += 100;
 			lineFlag = y;
 			flagCounter = System::FrameCount();
 		}
 	}
+	score += sco;
 }

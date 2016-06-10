@@ -4,7 +4,9 @@
 # include "Effect.h"
 
 Map::Map(){
+	lineFlag = 0;
 	block_counter = 0;
+	back_counter = 0;
 
 	map.resize(20);
 	for (int i = 0; i < 20; i++){
@@ -18,12 +20,29 @@ Map::Map(){
 	}
 }
 
-void Map::update(){
+void Map::update(std::shared_ptr<Effect> effect){
+
+	//”wŒi
+	back_counter++;
+	if (back_counter %= 10){
+		Vec2 pos(Random(640.0), Random(480.0));
+		effect->add<Snow>(pos, 1);
+	}
 
 	if (Input::KeySpace.clicked){
 		shiftAll();
 	}
-	//exitLine();
+	if (!lineFlag){
+		exitLine(effect);
+	}
+	else if (lineFlag && System::FrameCount() - flagCounter > 10){
+		for (int i = 0; i < 10; i++){
+			Vec2 pos(Random(50, WIDTH*BSIZE), 30 + lineFlag*BSIZE);
+			effect->add<Snow>(pos, 10);
+		}
+		shiftDown(lineFlag);
+		lineFlag = 0;
+	}
 }
 
 void Map::draw(){
@@ -35,7 +54,7 @@ void Map::draw(){
 	//draw block
 	for (int y = 0; y < HEIGHT; y++){
 		for (int x = 0; x < WIDTH; x++){
-			Rect(40 + BSIZE*x, 20 + BSIZE*y, 19, 19).draw({Palette::Gray, 50});
+			Rect(40 + BSIZE*x, 20 + BSIZE*y, 19, 19).draw({ Palette::Gray, 50 });
 			map[y][x].draw(40 + BSIZE*x, 20 + BSIZE*y);
 		}
 	}
@@ -92,7 +111,7 @@ void Map::shiftAll(){
 	}
 }
 
-void Map::exitLine(){
+void Map::exitLine(std::shared_ptr<Effect> effect){
 	for (int y = 0; y < HEIGHT; y++){
 		int x;
 		for (x = 0; x < WIDTH; x++){
@@ -101,7 +120,8 @@ void Map::exitLine(){
 			}
 		}
 		if (x == WIDTH){
-			shiftDown(y);
+			lineFlag = y;
+			flagCounter = System::FrameCount();
 		}
 	}
 }

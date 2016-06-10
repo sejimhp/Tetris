@@ -8,7 +8,7 @@ class Map{
 public:
 	Map();
 
-	void update();
+	void update(std::shared_ptr<Effect> effect);
 	void draw();
 	std::vector<std::vector<Piece> > getMap() const { return map; }
 
@@ -26,7 +26,11 @@ private:
 	void shiftAll();
 
 	//ˆê—ñ‚»‚ë‚Á‚Ä‚¢‚é‚Æ‚±‚ë‚ª‚ ‚ê‚ÎÁ‚·
-	void exitLine();
+	void exitLine(std::shared_ptr<Effect> effect);
 public:
 	int block_counter;
+	int back_counter;
+
+	int lineFlag;
+	int flagCounter;
 };

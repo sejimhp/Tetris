@@ -23,14 +23,9 @@ void Game::update(){
 			pieces->newPiece();
 		}
 
-		map->update();
+		map->update(getEffect());
 		pieces->update(this);
 
-		back_counter++;
-		if (back_counter %= 10){
-			Vec2 pos(Random(640.0), Random(480.0));
-			effect->add<Snow>(pos, 1);
-		}
 		effect->setSpeed(0.3);
 		effect->update();
 		break;

@@ -20,6 +20,7 @@ public:
 	void draw();
 
 	std::shared_ptr<Map> getMap() const { return map; }
+	std::shared_ptr<Effect> getEffect() const { return effect; }
 
 	void setGameOver() { state = State::GAMEOVER; }
 

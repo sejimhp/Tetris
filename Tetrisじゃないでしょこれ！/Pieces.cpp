@@ -5,8 +5,23 @@
 
 Pieces::Pieces(){
 	pieces.resize(3);
+	next_pieces.resize(3);
+	next_next_pieces.resize(3);
+	hold1.resize(3);
+	hold2.resize(3);
 	for (int i = 0; i < 3; i++){
 		pieces[i].resize(3);
+		next_pieces[i].resize(3);
+		next_next_pieces[i].resize(3);
+		hold1[i].resize(3);
+		hold2[i].resize(3);
+		for (int j = 0; j < 3; j++){
+			pieces[i][j].escape();
+			next_pieces[i][j].escape();
+			next_next_pieces[i][j].escape();
+			hold1[i][j].escape();
+			hold2[i][j].escape();
+		}
 	}
 	fallCounter = 0;
 }
@@ -15,10 +30,13 @@ void Pieces::update(Game* game){
 	std::shared_ptr<Map> MAP = game->getMap();
 	std::vector<std::vector<Piece> > map = MAP->getMap();
 
-	if (over(map)){
-		game->setGameOver();
-		return;
+	if (Input::KeyX.clicked){
+		swap1();
 	}
+	if (Input::KeyC.clicked){
+		swap2();
+	}
+
 	if (Input::KeyLeft.clicked && checkLeft(map)){
 		x--;
 	}
@@ -37,12 +55,30 @@ void Pieces::update(Game* game){
 		y++;
 	}
 
+	if (over(map)){
+		game->setGameOver();
+		return;
+	}
+
 }
 
 void Pieces::draw(){
+	static Font font(10);
+	font(L"xキーで交換").draw(20, 40);
+	Rect(20, 60, 60, 60).drawFrame(0, 1, { Palette::White, 50 });
+	font(L"cキーで交換").draw(20, 140);
+	Rect(20, 160, 60, 60).drawFrame(0, 1, { Palette::White, 50 });
+	font(L"next").draw(340, 20);
+	Rect(340, 40, 60, 60).drawFrame(0, 1, { Palette::White, 50 });
+	font(L"next next").draw(340, 120);
+	Rect(340, 140, 60, 60).drawFrame(0, 1, { Palette::White, 50 });
 	for (int i = 0; i < 3; i++){
 		for (int j = 0; j < 3; j++){
-			pieces[i][j].draw(40 + (x + j) * BSIZE, 20 + (y + i) * BSIZE);
+			pieces[i][j].draw(110 + (x + j) * BSIZE, 20 + (y + i) * BSIZE);
+			next_pieces[i][j].draw(340 + j * BSIZE, 40 + i * BSIZE);
+			next_next_pieces[i][j].draw(340 + j * BSIZE, 140 + i * BSIZE);
+			hold1[i][j].draw(20 + j * BSIZE, 60 + i * BSIZE);
+			hold2[i][j].draw(20 + j * BSIZE, 160 + i * BSIZE);
 		}
 	}
 }
@@ -59,13 +95,13 @@ void Pieces::turn(std::vector<std::vector<Piece> > map){
 		v[i].set(m[0][i]);
 	}
 	for (int i = 0; i < 2; i++){
-		m[0][i].set(m[2-i][0]);
+		m[0][i].set(m[2 - i][0]);
 	}
 	for (int i = 0; i < 2; i++){
-		m[2-i][0].set(m[2][2-i]);
+		m[2 - i][0].set(m[2][2 - i]);
 	}
 	for (int i = 0; i < 2; i++){
-		m[2][2-i].set(m[i][2]);
+		m[2][2 - i].set(m[i][2]);
 	}
 	for (int i = 0; i < 2; i++){
 		m[i][2].set(v[i]);
@@ -74,11 +110,11 @@ void Pieces::turn(std::vector<std::vector<Piece> > map){
 	int flag = 0;
 	if (x < 0){ x++; flag = 1; }
 	if (x >= 8) { x--; flag = 2; }
-	if (y >= 18) {	y--; flag = 3;}
+	if (y >= 18) { y--; flag = 3; }
 
 	for (int i = 0; i < 3; i++){
 		for (int j = 0; j < 3; j++){
-			if (m[i][j].getColor() != Type::NUL && 
+			if (m[i][j].getColor() != Type::NUL &&
 				map[i + y][j + x].getColor() != Type::NUL){
 				if (flag == 1)	x--;
 				if (flag == 2)	x++;
@@ -111,9 +147,15 @@ bool Pieces::over(std::vector<std::vector<Piece> > map){
 void Pieces::newPiece(){
 	//場所と値の初期化
 	y = 0; x = 4;
+	int sum = 0;
 	for (int i = 0; i < 3; i++){
 		for (int j = 0; j < 3; j++){
+			if (next_pieces[i][j].getColor() != Type::NUL){ sum++; }
 			pieces[i][j].escape();
+			pieces[i][j].set(next_pieces[i][j]);
+			next_pieces[i][j].escape();
+			next_pieces[i][j].set(next_next_pieces[i][j]);
+			next_next_pieces[i][j].escape();
 		}
 	}
 
@@ -133,12 +175,27 @@ void Pieces::newPiece(){
 		t = Type::GREEN;
 		break;
 	}
-	for (int i = 0; i < 4;){
-		int X = Random(0, 2);
-		int Y = Random(0, 2);
-		if (pieces[Y][X].getColor() == Type::NUL){
-			pieces[Y][X].setColor(t);
-			i++;
+	if (Random(0, 9) == 0){
+		for (int i = 0; i < 3; i++){
+			next_next_pieces[i][1].setColor(t);
+		}
+	}
+	else{
+		for (int i = 0; i < 4;){
+			int X = Random(0, 2);
+			int Y = Random(0, 2);
+			if (next_next_pieces[Y][X].getColor() == Type::NUL){
+				next_next_pieces[Y][X].setColor(t);
+				i++;
+			}
+			if (sum == 0){
+				X = Random(0, 2);
+				Y = Random(0, 2);
+				pieces[Y][X].setColor(t);
+				X = Random(0, 2);
+				Y = Random(0, 2);
+				next_pieces[Y][X].setColor(t);
+			}
 		}
 	}
 }
@@ -186,4 +243,50 @@ bool Pieces::checkBottom(std::vector<std::vector<Piece> > map){
 		}
 	}
 	return true;
+}
+
+void Pieces::swap1(){
+	std::vector<std::vector<Piece> > p(3, std::vector<Piece>(3));
+	int sum = 0;
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			if (hold1[i][j].getColor() != NUL){
+				sum++;
+			}
+		}
+	}
+
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			p[i][j].set(pieces[i][j]);
+			pieces[i][j].set(hold1[i][j]);
+			hold1[i][j].set(p[i][j]);
+		}
+	}
+	if (sum == 0){
+		newPiece();
+	}
+}
+
+void Pieces::swap2(){
+	std::vector<std::vector<Piece> > p(3, std::vector<Piece>(3));
+	int sum = 0;
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			if (hold2[i][j].getColor() != NUL){
+				sum++;
+			}
+		}
+	}
+
+	for (int i = 0; i < 3; i++){
+		for (int j = 0; j < 3; j++){
+			p[i][j].set(pieces[i][j]);
+			pieces[i][j].set(hold2[i][j]);
+			hold2[i][j].set(p[i][j]);
+		}
+	}
+	if (sum == 0){
+		newPiece();
+	}
 }

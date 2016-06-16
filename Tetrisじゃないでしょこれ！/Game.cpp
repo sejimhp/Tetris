@@ -20,7 +20,7 @@ void Game::update(){
 	switch (state){
 	case State::GAME:
 		if (Input::KeySpace.clicked){
-			pieces->newPiece();
+			//pieces->newPiece();
 		}
 
 		map->update(getEffect());

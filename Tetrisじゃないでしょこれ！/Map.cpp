@@ -17,9 +17,6 @@ Map::Map(){
 			map[i][j].setColor(Type::NUL);
 		}
 	}
-	for (int i = 0; i < 9; i++){
-		map[19][i].setColor(Type::BULE);
-	}
 }
 
 void Map::update(std::shared_ptr<Effect> effect){
@@ -51,23 +48,23 @@ void Map::update(std::shared_ptr<Effect> effect){
 
 void Map::draw(){
 	//draw line
-	Line(39, 20, 39, 20 + BSIZE*HEIGHT).draw();
-	Line(40 + BSIZE*WIDTH, 20, 40 + BSIZE*WIDTH, 20 + BSIZE*HEIGHT).draw();
-	Line(39, 20 + BSIZE*HEIGHT, 40 + BSIZE*WIDTH, 20 + BSIZE*HEIGHT).draw();
+	Line(109, 20, 109, 20 + BSIZE*HEIGHT).draw();
+	Line(110 + BSIZE*WIDTH, 20, 110 + BSIZE*WIDTH, 20 + BSIZE*HEIGHT).draw();
+	Line(109, 20 + BSIZE*HEIGHT, 110 + BSIZE*WIDTH, 20 + BSIZE*HEIGHT).draw();
 
 	//draw block
 	for (int y = 0; y < HEIGHT; y++){
 		for (int x = 0; x < WIDTH; x++){
-			Rect(40 + BSIZE*x, 20 + BSIZE*y, 19, 19).draw({ Palette::Gray, 50 });
-			map[y][x].draw(40 + BSIZE*x, 20 + BSIZE*y);
+			Rect(110 + BSIZE*x, 20 + BSIZE*y, 19, 19).draw({ Palette::Gray, 50 });
+			map[y][x].draw(110 + BSIZE*x, 20 + BSIZE*y);
 		}
 	}
 
-	static Font font(25);
-	font(L"Score").draw(300, 100);
-	font(score).draw(320, 150);
-	font(L"Zキーでを崩す").draw(300, 200);
-	font(L"残り", shiftAllCounter, L"回").draw(320, 240);
+	static Font font(20);
+	font(L"Score").draw(400, 200);
+	font(score).draw(420, 250);
+	font(L"Zキーで崩す").draw(400, 300);
+	font(L"残り", shiftAllCounter, L"回").draw(420, 340);
 }
 
 void Map::overWrite(std::vector<std::vector<Piece> > pieces, int x, int y){

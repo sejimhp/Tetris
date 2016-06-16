@@ -23,9 +23,18 @@ public:
 
 	//‰ñ“]
 	void turn(std::vector<std::vector<Piece> > map);
+
+	//“ü‚ê‘Ö‚¦
+	void swap1();
+	void swap2();
 	
-	std::vector<std::vector<Piece> > pieces;
 private:
+	std::vector<std::vector<Piece> > pieces;
+	std::vector<std::vector<Piece> > next_pieces;
+	std::vector<std::vector<Piece> > next_next_pieces;
+
+	std::vector<std::vector<Piece> > hold1;
+	std::vector<std::vector<Piece> > hold2;
 	int y, x;
 	int fallCounter;
 };
